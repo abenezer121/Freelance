@@ -4,14 +4,25 @@ require('mongoose-double')(mongoose)
 //add bets on projects
 var Schema = mongoose.Schema;
 var usersSchema = new mongoose.Schema({
-  email : 'String',
+  email : {
+            type: String,
+            required: true,
+            unique: true
+        },
   password : 'String',
-  phone : {type : String, unique: true},
-  username : String,
+  phone : {
+            type: String,
+            required: true,
+            unique: true
+        },
+  username : {
+            type: String,
+            required: true,
+            unique: true
+        },
   city : String,
-  FirstName : String,
   LastName : String,
-  phone : {type : String, unique: true},
+  FirstName : String,
 
 })
 var clientsSchema = new mongoose.Schema({
@@ -23,7 +34,7 @@ var clientsSchema = new mongoose.Schema({
 })
 var freelanceSchema = new mongoose.Schema({
 
-  workingon :
+  workedon :
   [
     {
       project : {type: Schema.Types.ObjectId , ref: 'project' },
@@ -54,7 +65,11 @@ var freelanceSchema = new mongoose.Schema({
 })
 
 var categorySchema = new mongoose.Schema({
-  name : String ,
+  name : {
+            type: String,
+            required: true,
+            unique: true
+        } ,
   subcategory :
   {
     type : Schema.Types.ObjectId , ref : 'subcategory'
