@@ -23,14 +23,28 @@ var usersSchema = new mongoose.Schema({
   city : String,
   LastName : String,
   FirstName : String,
+  to : {type : Schema.Types.ObjectId , refPath : 'people'},
+  people : {
+    type : String ,
+    required : true ,
+    enum : ['Clients' , 'freelance']
+  } ,
+  notification : [{type : Schema.Types.ObjectId , refPath : 'Notification'}],
+  chat : // useru message yaregachew sewoch
+  [
+    {
+      type: Schema.Types.ObjectId , ref: 'chat'
+    }
+  ]
 
 })
 var clientsSchema = new mongoose.Schema({
 
-  name : String , //if company
+  Cname : String , //if company
   detail : String,
-  place : String , //temporary if company
-  user : {type : Schema.Types.ObjectId , ref : 'user'}
+  address : String , //temporary if company
+  user : {type : Schema.Types.ObjectId , ref : 'user'},
+
 })
 var freelanceSchema = new mongoose.Schema({
 
@@ -49,19 +63,15 @@ var freelanceSchema = new mongoose.Schema({
   ],
 
   rating : { type: Schema.Types.Double },
-  chat :
-  [
-    {
-      type: Schema.Types.ObjectId , ref: 'chat'
-    }
-  ],
+
   skill :
   [
     {
       type: Schema.Types.ObjectId , ref: 'subcategory'
     }
   ],
-  user : {type : Schema.Types.ObjectId , ref : 'user'}
+  user : {type : Schema.Types.ObjectId , ref : 'user'},
+
 })
 
 var categorySchema = new mongoose.Schema({
@@ -88,27 +98,7 @@ var subcategorySchema = new mongoose.Schema({
   ]
 })
 
-var inboxSchema = new mongoose.Schema({
-  to : {type : Schema.Types.ObjectId , refPath : 'people'},
-  from : {type : Schema.Types.ObjectId , refPath : 'people'},
-  people : {
-    type : String ,
-    required : true ,
-    enum : ['Clients' , 'freelance']
-  },
-  message : String,
-} ,   { timestamps: { createdAt: 'created_at' }
-})
-var chatSchema = new mongoose.Schema({
-  to : {type : Schema.Types.ObjectId , refPath : 'people'},
-  from : {type : Schema.Types.ObjectId , refPath : 'people'},
-  people : {
-    type : String ,
-    required : true ,
-    enum : ['Clients' , 'freelance']
-  } ,
-  message : [{type : Schema.Types.ObjectId , ref : 'inbox'}]
-})
+
 // var workingon = new mongoose.Schema({}) add inside freelance as populate
 var projectsSchema = new mongoose.Schema({
   name : String ,
@@ -122,7 +112,33 @@ var projectsSchema = new mongoose.Schema({
   assignedto : {type : Schema.Types.ObjectId , ref : 'freelance'}
 })
 
-var inboxSchema = mongoose.model('inbox' , inboxSchema )
+
+var notificationSchema = new mongoose.Schema({
+  to : {type : Schema.Types.ObjectId , refPath : 'people'},
+  people : {
+    type : String ,
+    required : true ,
+    enum : ['Clients' , 'freelance']
+  } ,
+  status : String ,
+  message :String
+})
+
+
+
+
+var chatSchema = new mongoose.Schema({
+  to : {type : Schema.Types.ObjectId , refPath : 'people'},
+  from : {type : Schema.Types.ObjectId , refPath : 'people'},
+  message : [{to : {type : Schema.Types.ObjectId , refPath : 'people'} , from : {type : Schema.Types.ObjectId , refPath : 'people'} , message : String}],
+  people : {
+    type : String ,
+    required : true ,
+    enum : ['Clients' , 'freelance']
+  } ,
+})
+
+
 var clientsSchema = mongoose.model( 'Clients' , clientsSchema)
 var usersSchema = mongoose.model('User' , usersSchema)
 var freelanceSchema = mongoose.model('freelance' , freelanceSchema)
@@ -130,16 +146,16 @@ var categorySchema = mongoose.model('category' , categorySchema)
 var chatSchema = mongoose.model('chat' , chatSchema)
 var subcategorySchema = mongoose.model('subcategory' , subcategorySchema)
 var projectsSchema = mongoose.model('project' , projectsSchema)
-
+var notificationSchema = mongoose.model('Notification' , notificationSchema)
 var model = {
-  'inbox' : inboxSchema ,
   'Clients' : clientsSchema ,
   'User' : usersSchema ,
   'freelance' : freelanceSchema ,
   'category' : categorySchema ,
   'chat' : chatSchema ,
   'subcategory' : subcategorySchema ,
-  'project' : projectsSchema
+  'project' : projectsSchema ,
+  'Notification' : notificationSchema
 }
 
 exports.model  = model;
