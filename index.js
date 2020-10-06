@@ -1,38 +1,44 @@
+//natural-language-processing
+//natural-language-processing-tensorflow
+//nlp-sequence-models
+//attention-models-in-nlp
+//sequence-models-in-nlp
+
+
 const express = require('express')
+const session = require('express-session');
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const db = require('./routes/Db/dbmodel')
-const signup = require('./routes/user/signup')
-const login = require('./routes/user/login')
-const profile = require('./routes/user/profile')
+const user = require('./routes/user/user')
 const chat = require('./routes/chat/chat')
 const project = require('./routes/project/project')
-const updateproject = require('./routes/project/updateproject')
 const notification = require('./routes/Notification/notification')
-
-
-
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
 const app = express()
-
 mongoose.connect('mongodb://127.0.0.1:27017/Freelance',function(error){
   if(error) {console.log("error")}
 })
 
+
 app.use(bodyParser.urlencoded({extended :true}))
 app.use(bodyParser.json())
-app.use(signup)
-app.use(login)
-app.use(chat)
+// initialize passposrt and and session for persistent login sessions
+app.use(session({
+    secret: "tHiSiSasEcRetStr",
+    resave: true,
+    saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(user)
 app.use(project)
-app.use(updateproject)
+app.use(chat)
 app.use(notification)
 
-app.listen(3001 , () => console.log("lis"))
 
 
 
-//todo
-// add passport
-// add jwt
-// add session
-//read about session and jwt
+
+// launch the app
+app.listen(3030);
+console.log("App running at localhost:3030");

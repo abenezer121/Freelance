@@ -1,53 +1,14 @@
+//add passport auth on get and post
+
 const express = require('express')
 var router  = express.Router();
 const bcrypt = require('bcrypt');
-const DbModel = require('../Db/dbmodel')
-//100 -200 database error
+const projectcontroller = require('./../../controllers/project/project')
 
-router.post('/createproject' , function(req , res){
-  const {name , duration , budget , cathegory , detail , skillneeded} = req.body;
-  if(!name || !duration || !budget || !cathegory || !detail || !skillneeded)
-  {
-    res.send
-    (
-      {
-        status : 401 ,
-        message : "Please fill the boxes"
-      }
-    )
-  }
-  else
-  {
-    const project = new DbModel.project();
-    project.name = name;
-    project.duration = duration;
-    project.budget = budget;
-    project.category = category;
-    project.detail = detail;
-    project.skillneeded = skillneeded;
-    project.status = "unassigned";
-    project.save(function(err , res){
-      if(err)
-      {
-        res.send
-        (
-          {
-            status : 101 ,
-            message : "Dberror"
-          }
-        )
-      }
-      else
-      {
-        res.send
-        (
-          {
-            status : 501 ,
-            message : "sucess"
-          }
-        )
-      }
-    })
-  }
-})
+router.post('/createproject' , projectcontroller.createproject)
+//router.get('/createproject' , projectcontroller.createproject)
+router.post('/updateproject' , projectcontroller.updateproject);
+//router.get('/updateproject' , projectcontroller.updateproject);
+router.get('/listprojects' , projectcontroller.listprojects);
+
 module.exports = router;
