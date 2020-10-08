@@ -30,7 +30,7 @@ var UserSchema = new mongoose.Schema({
   to : {type : Schema.Types.ObjectId , refPath : 'people'},
   people : {
     type : String ,
-    enum : ['Clients' , 'Freelancers']
+    enum : ['Client' , 'Freelancer']
   } ,
   notification : [{type : Schema.Types.ObjectId , refPath : 'Notification'}],
   chat : // useru message yaregachew sewoch
@@ -74,7 +74,7 @@ var FreelancerSchema = new mongoose.Schema({
       type: Schema.Types.ObjectId , ref: 'SubCategory'
     }
   ],
-  user : {type : Schema.Types.ObjectId , ref : 'User'},
+
 
 })
 

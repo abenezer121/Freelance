@@ -1,8 +1,5 @@
-//natural-language-processing
 //natural-language-processing-tensorflow
-//nlp-sequence-models
-//attention-models-in-nlp
-//sequence-models-in-nlp
+
 
 
 const express = require('express')
@@ -10,12 +7,14 @@ const session = require('express-session');
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const user = require('./routes/user/user')
+const path = require('path');
 const chat = require('./routes/chat/chat')
 const project = require('./routes/project/project')
 const notification = require('./routes/Notification/notification')
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
 const app = express()
+
 mongoose.connect('mongodb://127.0.0.1:27017/Freelance',function(error){
   if(error) {console.log("error")}
 })
@@ -35,6 +34,9 @@ app.use(project)
 app.use(chat)
 app.use(notification)
 
+app.get('/' , function(req , res){
+          res.sendFile(path.join(__dirname+'/views/layout/login.html'));
+})
 
 
 
